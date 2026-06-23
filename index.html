@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>七七商贸 - qiqicompany.com</title>
+    <title>琦琦商贸 - qiqicompany.com</title>
     <style>
         /* 基础样式与字体指定 */
         * {
@@ -11,6 +11,13 @@
             margin: 0;
             padding: 0;
         }
+        
+        /* 引入中文字体：报隶-繁（系统若无则回退艺术隶书） */
+        @font-face {
+            font-family: 'BaoLi';
+            src: local('Baoli SC'), local('Baoli-TC'), local('BaoLi'), local('LiSu');
+        }
+
         body {
             font-family: "SimSun", "宋体", serif;
             color: #333333;
@@ -22,7 +29,7 @@
             font-family: "Times New Roman", Times, serif;
         }
         
-        /* 导航栏 */
+        /* 顶部导航栏 */
         header {
             background-color: #ffffff;
             border-bottom: 1px solid #e5e5e5;
@@ -38,11 +45,13 @@
             align-items: center;
             padding: 15px 20px;
         }
+        /* 1) 左上角更换为 报隶-繁 琦琦商贸 */
         .logo {
-            font-size: 20px;
+            font-family: 'BaoLi', "SimSun", serif;
+            font-size: 26px;
             font-weight: bold;
-            color: #222;
-            letter-spacing: 1px;
+            color: #111111;
+            letter-spacing: 2px;
             cursor: pointer;
         }
         nav a {
@@ -62,7 +71,7 @@
             max-width: 1100px;
             margin: 40px auto;
             padding: 0 20px;
-            min-height: 60vh;
+            min-height: 70vh;
         }
 
         /* 板块通用样式 */
@@ -72,48 +81,93 @@
             margin-bottom: 35px;
             border-radius: 4px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-            /* 默认隐藏所有板块，由JavaScript控制显示 */
-            display: none; 
+            display: none; /* 默认隐藏由JS控制 */
         }
         .section-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
             margin-bottom: 30px;
-            border-left: 4px solid #333;
+            border-left: 4px solid #111111;
             padding-left: 12px;
             color: #111;
         }
 
-        /* 公司信息板块布局 */
-        .company-grid {
+        /* --- 2) 公司信息大升级子板块样式 --- */
+        .sub-section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+        }
+        /* 黑色横条元素 */
+        .black-divider {
+            height: 1px;
+            background-color: #222222;
+            width: 100%;
+            margin: 40px 0;
+            opacity: 0.8;
+        }
+        .sub-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #222;
+            display: flex;
+            align-items: center;
+        }
+        .sub-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #eee;
+            margin-left: 15px;
+        }
+        
+        /* 布局栅格 */
+        .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
+            align-items: center;
         }
         @media (max-width: 768px) {
-            .company-grid { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
         }
+        
         .intro-text p {
             margin-bottom: 15px;
             color: #555;
             text-align: justify;
         }
         
-        /* 评分条状图 */
-        .rating-box {
-            background: #fdfdfd;
-            padding: 20px;
-            border: 1px solid #eeeeee;
+        /* 标语样式 */
+        .slogan-box {
+            border-left: 2px solid #999;
+            padding-left: 20px;
         }
-        .rating-title {
-            font-size: 15px;
+        .slogan-box h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #111;
+        }
+        .slogan-box p {
+            font-size: 14px;
+            color: #666;
             margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        .highlight-text {
             font-weight: bold;
+            color: #000;
+        }
+
+        /* 评分条状图（移除了原卡片外边框） */
+        .rating-box {
+            background: transparent;
+            padding: 10px 0;
         }
         .stat-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-size: 13px;
         }
         .bar-container {
@@ -124,13 +178,122 @@
             overflow: hidden;
         }
         .bar-fill {
-            background-color: #444444;
+            background-color: #222222;
             height: 100%;
             width: 0; 
-            transition: width 1s ease-in-out;
+            transition: width 1.2s cubic-bezier(0.1, 1, 0.1, 1);
         }
 
-        /* 商品板块布局 */
+        /* 营业范围网店跳转 */
+        .shop-redirect-box {
+            margin-top: 25px;
+            font-size: 14px;
+        }
+        .shop-row {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .badge {
+            background: #222;
+            color: #fff;
+            padding: 2px 10px;
+            font-size: 12px;
+            margin-right: 15px;
+            letter-spacing: 1px;
+        }
+        .shop-link a {
+            color: #000;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .shop-link a:hover {
+            color: #666;
+        }
+
+        /* --- 3) 出售商品升级样式 --- */
+        .product-header-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .search-wrapper {
+            position: relative;
+            width: 320px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            font-family: "SimSun", serif;
+            font-size: 13px;
+            border: 1px solid #cccccc;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .search-input:focus {
+            border-color: #111111;
+        }
+        
+        /* 联想词下拉列表框架 */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-top: none;
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .suggestion-item {
+            padding: 10px 15px;
+            font-size: 13px;
+            cursor: pointer;
+            border-bottom: 1px solid #f9f9f9;
+        }
+        .suggestion-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .home-btn-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            transition: color 0.3s;
+        }
+        .home-btn-container:hover {
+            color: #999;
+        }
+        /* 三条平行横杠字符图标 */
+        .icon-bars {
+            display: inline-block;
+            width: 16px;
+            height: 12px;
+            border-top: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            position: relative;
+            margin-right: 8px;
+        }
+        .icon-bars::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: currentColor;
+        }
+
+        /* 商品网格与卡片 */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -150,7 +313,6 @@
             transform: translateY(-4px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.05);
         }
-        /* 商品图片自适应样式（保留您上一轮修改后的图片逻辑） */
         .product-card img {
             width: 100%;
             height: 220px;
@@ -167,9 +329,26 @@
             font-size: 13px;
             color: #666;
             padding: 0 10px;
+            margin-bottom: 10px;
+        }
+        /* 为日后预留的价格样式位置 */
+        .product-price {
+            font-family: "Times New Roman", serif;
+            font-weight: bold;
+            color: #111;
+            font-size: 15px;
+            margin-top: 5px;
         }
 
-        /* 期待板块样式 */
+        .no-result-msg {
+            text-align: center;
+            padding: 50px 0;
+            color: #999;
+            font-size: 14px;
+            grid-column: 1 / -1;
+        }
+
+        /* 期待空板块通用 */
         .placeholder-section {
             text-align: center;
             padding: 60px 20px;
@@ -178,13 +357,55 @@
             letter-spacing: 1px;
         }
 
-        /* 页脚 */
+        /* --- 传统网页底部目录板块 --- */
+        .footer-directory {
+            background-color: #ffffff;
+            border-top: 1px solid #e5e5e5;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+        .directory-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .directory-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        .directory-col h5 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #111;
+            border-bottom: 1px solid #222;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+        .directory-col ul {
+            list-style: none;
+        }
+        .directory-col ul li {
+            margin-bottom: 8px;
+        }
+        .directory-col ul li a {
+            font-size: 13px;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .directory-col ul li a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
         footer {
             text-align: center;
-            padding: 30px 20px;
+            padding: 25px 20px;
             font-size: 12px;
             color: #888;
-            border-top: 1px solid #e5e5e5;
+            border-top: 1px solid #eee;
             background: #fff;
         }
     </style>
@@ -193,7 +414,7 @@
 
     <header>
         <div class="nav-container">
-            <div class="logo" onclick="window.location.hash = '#company'">QI QI COMPANY</div>
+            <div class="logo" onclick="window.location.hash = '#company'">琦琦商贸</div>
             <nav>
                 <a href="#company" id="nav-company">公司信息</a>
                 <a href="#products" id="nav-products">出售商品</a>
@@ -207,57 +428,112 @@
         
         <section id="company">
             <div class="section-title">公司信息</div>
-            <div class="company-grid">
-                <div class="intro-text">
-                    <p>琦琦商贸有限公司是一家拥有 <span class="en-num">13</span> 年历史的诚信老店。作为一家专业的有限责任公司，我们深耕于多领域零售与批发业务，致力于为客户提供一站式高品质服务。</p>
-                    <p>我们的核心经营范围涵盖：五金产品零售与批发、金属制品销售、交通及公共管理用标牌销售；同时提供专业的办公服务、办公用品销售，以及高水准的广告设计、代理与制作。此外，公司亦涉足工艺美术品及礼仪用品销售（象牙及其制品除外），全方位满足企业与个人的多元化需求。</p>
+            
+            <div class="sub-section">
+                <div class="sub-title">关于我们</div>
+                <div class="info-grid">
+                    <div class="intro-text">
+                        <p>七七商贸有限公司是一家拥有 <span class="en-num">13</span> 年历史的诚信老店。作为一家专业的有限责任公司，我们深耕于多领域零售与批发业务，致力于为客户提供一站式高品质服务。</p>
+                        <p>我们的核心经营范围涵盖：五金产品零售与批发、金属制品销售、交通及公共管理用标牌销售；同时提供专业的办公服务、办公用品销售，以及高水准的广告设计、代理与制作。此外，公司亦涉足工艺美术品及礼仪用品销售（象牙及其制品除外），全方位满足企业与个人的多元化需求。</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <svg width="220" height="180" viewBox="0 0 200 160" fill="none" stroke="#222222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="20" y="110" width="100" height="25" rx="3" fill="#ffffff"/>
+                            <line x1="20" y1="122" x2="120" y2="122" stroke-width="1" stroke-dasharray="3 3"/>
+                            <path d="M35 110 C 35 118, 105 118, 105 110" fill="#222222" opacity="0.1"/>
+                            
+                            <path d="M135 135 L175 135 L170 85 L160 85 L160 55 C160 40, 150 35, 155 35 C145 35, 140 40, 140 55 L140 85 L135 85 Z" fill="#ffffff"/>
+                            <circle cx="150" cy="35" r="5" fill="#222222"/>
+                            <line x1="135" y1="131" x2="175" y2="131" stroke-width="1"/>
+
+                            <path d="M10 145 L190 145" stroke="#999999" stroke-width="1"/>
+                            <rect x="55" y="40" width="45" height="45" rx="2" stroke-width="1.5" stroke-dasharray="2 1"/>
+                            <text x="63" y="61" font-family="SimSun" font-size="13" font-weight="bold" fill="#222222" stroke="none">琦琦</text>
+                            <text x="63" y="78" font-family="SimSun" font-size="13" font-weight="bold" fill="#222222" stroke="none">印信</text>
+                        </svg>
+                    </div>
                 </div>
-                <div class="rating-box">
-                    <div class="rating-title">店铺运营数据 & 真实体验分</div>
-                    
-                    <div class="stat-row"><span>店铺粉丝数</span><span class="en-num">60,000+</span></div>
-                    <div class="stat-row"><span>店铺年销量</span><span class="en-num">400,000+</span></div>
-                    <div class="stat-row"><span>真实体验分</span><span class="en-num">4.9 / 5.0</span></div>
-                    <div class="bar-container"><div class="bar-fill" data-width="98%"></div></div>
-                    
-                    <div class="stat-row"><span>商品质量分</span><span class="en-num">5.0 / 5.0</span></div>
-                    <div class="bar-container"><div class="bar-fill" data-width="100%"></div></div>
-                    
-                    <div class="stat-row"><span>物流速度分</span><span class="en-num">4.9 / 5.0</span></div>
-                    <div class="bar-container"><div class="bar-fill" data-width="98%"></div></div>
-                    
-                    <div class="stat-row"><span>服务保障分</span><span class="en-num">4.9 / 5.0</span></div>
-                    <div class="bar-container"><div class="bar-fill" data-width="98%"></div></div>
+            </div>
+            
+            <div class="black-divider"></div>
+            
+            <div class="sub-section">
+                <div class="sub-title">淘宝&天猫官网评价</div>
+                <div class="info-grid">
+                    <div class="slogan-box">
+                        <h4>传承金石篆刻之美，专注高标准政企印信</h4>
+                        <p>“工欲善其事，必先利其器。”我们坚持精选<span class="highlight-text">天然好料</span>，纯手工校对排版，确保每一枚印章字模端正、严丝合缝。</p>
+                        
+                        <h4 style="margin-top:20px;">跨国标准 · 行业标杆体验</h4>
+                        <p style="color: #777; font-size: 13.5px;">无论是严苛符合日本法律的留学生印章，还是追求品质的政商高档牛角公章。四万余笔真实好评见证，数据不撒谎，品质看得见。</p>
+                    </div>
+                    <div class="rating-box">
+                        <div class="stat-row"><span>店铺粉丝数</span><span class="en-num">60,000+</span></div>
+                        <div class="stat-row"><span>店铺年销量</span><span class="en-num">400,000+</span></div>
+                        <div class="stat-row"><span>淘宝真实体验分</span><span class="en-num">4.9 / 5.0</span></div>
+                        <div class="bar-container"><div class="bar-fill" data-width="98%"></div></div>
+                        
+                        <div class="stat-row"><span>商品质量分</span><span class="en-num">5.0 / 5.0</span></div>
+                        <div class="bar-container"><div class="bar-fill" data-width="100%"></div></div>
+                        
+                        <div class="stat-row"><span>物流速度分</span><span class="en-num">4.9 / 5.0</span></div>
+                        <div class="bar-container"><div class="bar-fill" data-width="98%"></div></div>
+                        
+                        <div class="stat-row"><span>服务保障分</span><span class="en-num">4.9 / 5.0</span></div>
+                        <div class="bar-container"><div class="bar-fill" data-width="98%"></div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="black-divider"></div>
+            
+            <div class="sub-section">
+                <div class="sub-title">营业范围</div>
+                <div class="intro-text" style="max-width: 800px; margin-bottom: 30px;">
+                    <p>琦琦商贸业务范围纵横海内外，提供全网领先的极速发货服务。仓储体系智能高效，接单即刻进入定制流转线，以卓越的物流响应速度与保姆式全周期保障，为全球客户带来全满分的极致采购体验。</p>
+                </div>
+                
+                <div class="info-grid">
+                    <div class="shop-redirect-box">
+                        <div class="shop-row">
+                            <span class="badge">中国</span>
+                            <span class="shop-link">点击<a href="https://qiqidz.tmall.com/category.htm?spm=a21n57.shop_search.0.0.43f14ddf3cFL3I" target="_blank">这里</a>，进入我们的网店，让我们来了解您的需求吧！</span>
+                        </div>
+                        <div class="shop-row" style="margin-top: 25px;">
+                            <span class="badge">国际</span>
+                            <span class="shop-link">点击<a href="https://www.stamph.com" target="_blank">这里</a>，进入我们的网店，让我们来了解您的需求吧！</span>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <svg width="260" height="150" viewBox="0 0 300 180" fill="none" stroke="#333" stroke-width="1.2">
+                            <path d="M30 40 Q 50 30, 80 45 T 100 80 Q 80 120, 60 130 Z" stroke-dasharray="2 2" fill="#fcfcfc"/> <path d="M140 50 Q 180 30, 220 40 T 260 80 Q 220 120, 180 140 Q 140 100, 140 50 Z" fill="#fcfcfc"/> <circle cx="210" cy="65" r="3" fill="#111"/> <path d="M70 60 C 120 20, 180 30, 210 65" stroke="#999" stroke-width="1" stroke-dasharray="4 4"/>
+                            <path d="M210 65 C 230 90, 240 120, 250 130" stroke="#999" stroke-width="1" stroke-dasharray="4 4"/>
+                            <line x1="210" y1="65" x2="230" y2="55" stroke-width="0.8"/>
+                            <circle cx="230" cy="55" r="1.5" fill="#222"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="products">
-            <div class="section-title">出售商品</div>
-            <div class="product-grid">
+            <div class="product-header-action">
+                <div class="section-title" style="margin-bottom: 0;">出售商品</div>
                 
-                <div class="product-card">
-                    <img src="product1.png" alt="日本留学专业印章套组">
-                    <div style="font-size: 12px; color: #999; margin: 5px 0;" class="en-num">[ 日本留学印章系列 ]</div>
-                    <h3>日本留学专业印章套组</h3>
-                    <p>专为赴日留学生定制。包含认印、实印与银行印。严格符合日本法律规范，字模端正，排版严谨美观。</p>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div class="home-btn-container" onclick="window.location.hash = '#company'">
+                        <span class="icon-bars"></span>
+                        <span>回到主页</span>
+                    </div>
+                    <div class="search-wrapper">
+                        <input type="text" class="search-input" id="goodsSearch" placeholder="输入关键字搜索商品（如: 留）..." oninput="executeSearch()">
+                        <div class="search-suggestions" id="suggestionsBox"></div>
+                    </div>
                 </div>
-
-                <div class="product-card">
-                    <img src="product2.png" alt="天然牛角公文及私章">
-                    <div style="font-size: 12px; color: #999; margin: 5px 0;" class="en-num">[ 天然牛角印章 ]</div>
-                    <h3>天然牛角公文及私章</h3>
-                    <p>精选天然牛角材质，质地坚韧，色泽温润。提供方形公章与圆形私章高级定制，彰显卓越品质。</p>
-                </div>
-
-                <div class="product-card">
-                    <img src="product3.png" alt="金石篆刻青田石印章">
-                    <div style="font-size: 12px; color: #999; margin: 5px 0;" class="en-num">[ 青田石工艺印章 ]</div>
-                    <h3>金石篆刻青田石印章</h3>
-                    <p>天工造物，品趣雅物。精选上等青田石，易于镌刻。配有精美流苏，集办公实用与金石收藏于一体。</p>
-                </div>
-
             </div>
+            
+            <div class="product-grid" id="productGridContainer">
+                </div>
         </section>
 
         <section id="jobs" class="placeholder-section">
@@ -272,52 +548,190 @@
 
     </main>
 
+    <div class="footer-directory">
+        <div class="directory-container">
+            <div class="directory-col">
+                <h5>企业概况</h5>
+                <ul>
+                    <li><a href="#company" onclick="window.location.hash='#company'">关于我们</a></li>
+                    <li><a href="#company" onclick="window.location.hash='#company'">官方评价</a></li>
+                    <li><a href="#company" onclick="window.location.hash='#company'">营业范围</a></li>
+                </ul>
+            </div>
+            <div class="directory-col">
+                <h5>商品中心</h5>
+                <ul>
+                    <li><a href="#products" onclick="window.location.hash='#products'">日本留学印章</a></li>
+                    <li><a href="#products" onclick="window.location.hash='#products'">天然牛角印章</a></li>
+                    <li><a href="#products" onclick="window.location.hash='#products'">青田石工艺章</a></li>
+                </ul>
+            </div>
+            <div class="directory-col">
+                <h5>人才招聘</h5>
+                <ul>
+                    <li><a href="#jobs" onclick="window.location.hash='#jobs'">社会招聘</a></li>
+                    <li><a href="#jobs" onclick="window.location.hash='#jobs'">校园招聘</a></li>
+                </ul>
+            </div>
+            <div class="directory-col">
+                <h5>服务支持</h5>
+                <ul>
+                    <li><a href="#others" onclick="window.location.hash='#others'">其它服务</a></li>
+                    <li><a href="#company" onclick="window.location.hash='#company'">联络我们</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <p class="en-num">&copy; 2026 qiqicompany.com. All Rights Reserved. 宋体 / Times New Roman 规范排版</p>
+        <p class="en-num">&copy; 2026 qiqicompany.com. All Rights Reserved. 规范化排版设计</p>
     </footer>
 
     <script>
+        // 【核心商品数据库】日后有新商品、价格变动，直接在下面这个数组里追加或修改即可！
+        const PRODUCT_DATABASE = [
+            {
+                id: 1,
+                pinyinKey: "ribenliuxue", // 辅助内部首字母及拼音排序
+                title: "日本留学专业印章套组",
+                desc: "专为赴日留学生定制。包含认印、实印与银行印。严格符合日本法律规范，字模端正，排版严谨美观。",
+                imgSrc: "product1.png",
+                price: "" // 预留的价格空位，日后可填入如 "¥198.00"
+            },
+            {
+                id: 2,
+                pinyinKey: "tianranniu jiao",
+                title: "天然牛角公文及私章",
+                desc: "精选天然牛角材质，质地坚韧，色泽温润。提供方形公章与圆形私章高级定制，彰显卓越品质。",
+                imgSrc: "product2.png",
+                price: "" // 预留的价格空位
+            },
+            {
+                id: 3,
+                pinyinKey: "qingtianshi",
+                title: "金石篆刻青田石印章",
+                desc: "天工造物，品趣雅物。精选上等青田石，易于镌刻。配有精美流苏，集办公实用与金石收藏于一体。",
+                imgSrc: "product3.png",
+                price: "" // 预留的价格空位
+            }
+        ];
+
+        // 基础多页面路由控制
         function routePage() {
-            // 获取当前网址后缀的 hash 值（例如 #products），如果为空则默认显示 #company
             let hash = window.location.hash || '#company';
-            
-            // 1. 隐藏所有板块
             const sections = document.querySelectorAll('main section');
             sections.forEach(sec => sec.style.display = 'none');
             
-            // 2. 取消所有导航字体的加粗高亮
             const navLinks = document.querySelectorAll('nav a');
             navLinks.forEach(link => link.classList.remove('active'));
             
-            // 3. 显示用户点击的目标板块
             const targetSection = document.querySelector(hash);
             if (targetSection) {
                 targetSection.style.display = 'block';
             }
             
-            // 4. 高亮对应的导航文字
             const activeLink = document.querySelector(`nav a[href="${hash}"]`);
             if (activeLink) {
                 activeLink.classList.add('active');
             }
 
-            // 5. 如果切回了公司信息，触发进度条动画
+            // 触发公司信息子板块2的进度条载入动画
             if (hash === '#company') {
                 const fills = document.querySelectorAll('.bar-fill');
-                fills.forEach(fill => fill.style.width = '0'); // 先清空
+                fills.forEach(fill => fill.style.width = '0');
                 setTimeout(() => {
                     fills.forEach(fill => {
                         fill.style.width = fill.getAttribute('data-width');
                     });
                 }, 100);
             }
+            // 切换页面时，确保滚动到最顶部
+            window.scrollTo(0, 0);
         }
 
-        // 监听网址的变化（当用户点击右上角文字时自动触发）
+        // 商品渲染引擎
+        function renderProducts(productsList) {
+            const container = document.getElementById('productGridContainer');
+            container.innerHTML = '';
+            
+            if(productsList.length === 0) {
+                container.innerHTML = `<div class="no-result-msg">您找的宝贝商品暂且还不存在哦</div>`;
+                return;
+            }
+            
+            productsList.forEach(item => {
+                // 判断是否有预留价格，如果有则显示
+                const priceHtml = item.price ? `<div class="product-price">${item.price}</div>` : '';
+                
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${item.imgSrc}" alt="${item.title}">
+                    <h3>${item.title}</h3>
+                    <p>${item.desc}</p>
+                    ${priceHtml}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 3) 高级智能搜索与模糊匹配联想功能
+        function executeSearch() {
+            const keyword = document.getElementById('goodsSearch').value.trim().toLowerCase();
+            const suggestionsBox = document.getElementById('suggestionsBox');
+            
+            if(!keyword) {
+                suggestionsBox.style.display = 'none';
+                // 搜索框为空时展示全部，按字母排序
+                const sortedAll = [...PRODUCT_DATABASE].sort((a,b) => a.pinyinKey.localeCompare(b.pinyinKey));
+                renderProducts(sortedAll);
+                return;
+            }
+
+            // 过滤匹配的商品列表（只要标题或描述包含输入的任意字符即可）
+            let filtered = PRODUCT_DATABASE.filter(item => {
+                return item.title.toLowerCase().includes(keyword) || item.desc.toLowerCase().includes(keyword);
+            });
+
+            // 按照首字母/拼音进行升序排列
+            filtered.sort((a, b) => a.pinyinKey.localeCompare(b.pinyinKey));
+
+            // 渲染商品网格
+            renderProducts(filtered);
+
+            // 渲染下拉提示联想词
+            if(filtered.length > 0 && filtered.length < PRODUCT_DATABASE.length) {
+                suggestionsBox.innerHTML = '';
+                filtered.forEach(prod => {
+                    const div = document.createElement('div');
+                    div.className = 'suggestion-item';
+                    div.innerText = prod.title;
+                    div.onclick = function() {
+                        document.getElementById('goodsSearch').value = prod.title;
+                        suggestionsBox.style.display = 'none';
+                        renderProducts([prod]);
+                    };
+                    suggestionsBox.appendChild(div);
+                });
+                suggestionsBox.style.display = 'block';
+            } else {
+                suggestionsBox.style.display = 'none';
+            }
+        }
+
+        // 点击空白处关闭联想词弹窗
+        document.addEventListener('click', function(e){
+            if(e.target.id !== 'goodsSearch') {
+                document.getElementById('suggestionsBox').style.display = 'none';
+            }
+        });
+
         window.addEventListener('hashchange', routePage);
-        
-        // 首次打开网页时初始化显示
-        window.addEventListener('DOMContentLoaded', routePage);
+        window.addEventListener('DOMContentLoaded', () => {
+            routePage();
+            // 初始化展示所有商品
+            executeSearch();
+        });
     </script>
 </body>
 </html>
